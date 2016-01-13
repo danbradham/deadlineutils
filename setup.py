@@ -45,7 +45,7 @@ setup(
     license=info['license'],
     packages=find_packages(),
     package_data={
-        '': ['LICENSE', 'README.rst', 'HISTORY.rst'],
+        '': ['README.rst'],
     },
     include_package_data=True,
     classifiers=(
