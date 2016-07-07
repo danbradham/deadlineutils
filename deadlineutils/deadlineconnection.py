@@ -212,7 +212,7 @@ def maya_info(render_path, render_prefix, render_layer, cache=None):
                 'BatchName': scene_name,
                 'UserName': getpass.getuser(),
                 'Frames': '-'.join([str(start_frame), str(end_frame)]),
-                'Plugin': 'MayaCmd',
+                'Plugin': 'MayaBatch',
                 'OutputDirectory0': render_path,
             },
             'plugin_info': {
