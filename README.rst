@@ -4,12 +4,12 @@ deadlineutils
 Deadline Standalone API utilities
 
 
-DeadlineConnection
+Connection
 ==================
 Wraps ``Deadline.DeadlineConnect.DeadlineCon`` providing additional
 functionality. Can be used as a ContextManager::
 
-    with DeadlineConnection('localhost', 8080) as c:
+    with Connection('localhost', 8080) as c:
         best_pool = c.get_best_pool(prefix='maya')
 
 Here we get the best possible pool for the next job submission with the
