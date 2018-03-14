@@ -1,4 +1,5 @@
 from ConnectionProperty import ConnectionProperty
+from DeadlineUtility import ArrayToCommaSeparatedString
 import json
 
 class LimitGroups:
@@ -35,7 +36,7 @@ class LimitGroups:
         
         if names is not None:
             
-            script = "/api/limitgroups?Names="+ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = "/api/limitgroups?Names="+ArrayToCommaSeparatedString(names).replace(' ','+')
             
         else:
             script = "/api/limitgroups"
@@ -96,7 +97,7 @@ class LimitGroups:
             Input: name: The limit group name (May be a list)
             Returns: Success message
         """
-        return self.connectionProperties.__delete__("/api/limitgroups?Names="+ArrayToCommaSeperatedString(name).replace(' ','+'))
+        return self.connectionProperties.__delete__("/api/limitgroups?Names="+ArrayToCommaSeparatedString(name).replace(' ','+'))
 
     def ResetLimitGroup(self, name):
         """ Resets the usage counts for a limit group.
@@ -106,16 +107,3 @@ class LimitGroups:
         body = '{"Command":"reset", "Name":"'+name+'"}'
         
         return self.connectionProperties.__put__("/api/limitgroups", body)
-
-
-def ArrayToCommaSeperatedString(array):
-    if isinstance(array, basestring):
-        return array
-    else:
-        i=0
-        script=""
-        for i in range(0,len(array)):
-            if(i!=0):
-                script+=","
-            script += str(array[i]);
-        return script

@@ -1,6 +1,7 @@
 import json
 import ast
 from ConnectionProperty import ConnectionProperty
+from DeadlineUtility import ArrayToCommaSeparatedString
 
 class Jobs:
     """
@@ -24,8 +25,12 @@ class Jobs:
         """
         script = "/api/jobs"
         if ids != None:
-            script = script +"?JobID=" + ArrayToCommaSeperatedString(ids)
+            script = script +"?JobID=" + ArrayToCommaSeparatedString(ids)
         return self.connectionProperties.__get__(script)
+
+    def CalculateJobStatistics(self, jobID):
+        "Gets job statistics for the specified job"
+        return self.connectionProperties.__get__("/api/jobs?JobID=" + jobID + "&Statistics=true")
 
     def GetJobsInState(self, state):
         """    Gets all jobs in the specified state.
@@ -47,7 +52,7 @@ class Jobs:
             Returns: The job/s (list)
         """
         
-        jobId = ArrayToCommaSeperatedString(id)
+        jobId = ArrayToCommaSeparatedString(id)
         
         result = self.connectionProperties.__get__("/api/jobs?JobID="+jobId)
         
@@ -189,7 +194,10 @@ class Jobs:
                     idOnly: If True, only the job's ID is returned, defaults to False
             Returns: the new job
         """
-               
+        
+        if not isinstance(aux, list):
+            aux = [aux]
+        
         return self.connectionProperties.__post__("/api/jobs", buildJobSubmission(info, plugin, aux, idOnly))
         
     def SubmitJob(self, info, plugin, aux = [], idOnly = False):
@@ -200,6 +208,9 @@ class Jobs:
                     idOnly: If True, only the job's ID is returned, defaults to False
             Returns: the new job
         """
+        
+        if not isinstance(aux, list):
+            aux = [aux]
         
         body = '{"JobInfo":'+json.dumps(info)+',"PluginInfo":'+json.dumps(plugin)+',"AuxFiles":'+json.dumps(aux)
         if idOnly:
@@ -302,7 +313,7 @@ class Jobs:
         
         script = "/api/jobs"
 
-        script = script +"?JobID=" + ArrayToCommaSeperatedString(ids)+"&Details=true"
+        script = script +"?JobID=" + ArrayToCommaSeparatedString(ids)+"&Details=true"
         return self.connectionProperties.__get__(script)
         
     #Undelete/Purge Deleted
@@ -315,7 +326,7 @@ class Jobs:
         script = "/api/jobs?Deleted=true"
         
         if ids != None:
-            script = script +"&JobID=" + ArrayToCommaSeperatedString(ids)
+            script = script +"&JobID=" + ArrayToCommaSeparatedString(ids)
         return self.connectionProperties.__get__(script)
             
     def GetDeletedJobIDs(self):
@@ -333,7 +344,7 @@ class Jobs:
         
         script = "/api/jobs?Purge=true"
         
-        script = script +"&JobID=" + ArrayToCommaSeperatedString(ids)
+        script = script +"&JobID=" + ArrayToCommaSeparatedString(ids)
         return self.connectionProperties.__delete__(script)
         
     def UndeleteJob(self, id):
@@ -353,20 +364,6 @@ class Jobs:
         #body = '{"Command":"undelete", "JobIDs":"'+id+'"}'
         body = json.dumps({"Command":"undelete","JobIDs":ids})
         return self.connectionProperties.__put__("/api/jobs", body)
-
-#Helper function to seperate arrays into strings
-def ArrayToCommaSeperatedString(array):
-    if isinstance(array, basestring):
-        return array
-    else:
-        i=0
-        script=""
-        for i in range(0,len(array)):
-            if(i!=0):
-                script+=","
-            script += str(array[i]);
-        #script+="\""
-        return script
         
 def buildJobSubmission(info, plugins, aux, idOnly):
     

@@ -1,4 +1,5 @@
 from ConnectionProperty import ConnectionProperty
+from DeadlineUtility import ArrayToCommaSeparatedString
 import json
 
 class Slaves:
@@ -22,7 +23,7 @@ class Slaves:
         """
         script = "/api/slaves?Data=infosettings"
         if names != None:
-            script = script +"&Name="+ ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = script +"&Name="+ ArrayToCommaSeparatedString(names).replace(' ','+')
         return self.connectionProperties.__get__(script)
 
     def GetSlaveInfoSettings(self, name):
@@ -57,7 +58,7 @@ class Slaves:
             """
         script = "/api/slaves?Data=info"
         if names != None:
-            script = script + "&Name="+ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = script + "&Name="+ArrayToCommaSeparatedString(names).replace(' ','+')
         return self.connectionProperties.__get__(script)
 
     def SaveSlaveInfo(self, info):
@@ -84,7 +85,7 @@ class Slaves:
         """
         script = "/api/slaves?Data=settings"
         if names != None:
-            script = script + "&Name="+ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = script + "&Name="+ArrayToCommaSeparatedString(names).replace(' ','+')
             
         return self.connectionProperties.__get__(script)
 
@@ -131,7 +132,7 @@ class Slaves:
                     pool: The name of the pool or pools( may be a list )
             Return: Success message
         """
-        return self.connectionProperties.__delete__("/api/pools?Slaves="+ArrayToCommaSeperatedString(slave)+"&Pool="+ArrayToCommaSeperatedString(pool))
+        return self.connectionProperties.__delete__("/api/pools?Slaves="+ArrayToCommaSeparatedString(slave)+"&Pool="+ArrayToCommaSeparatedString(pool))
 
     def RemoveGroupFromSlave(self, slave,group):
         """ Adds a group from a slave.
@@ -139,21 +140,21 @@ class Slaves:
                     group: The name of the group or group( may be a list )
             Return: Success message
         """
-        return self.connectionProperties.__delete__("/api/groups?Slaves="+ArrayToCommaSeperatedString(slave)+"&Group="+ArrayToCommaSeperatedString(group))
+        return self.connectionProperties.__delete__("/api/groups?Slaves="+ArrayToCommaSeparatedString(slave)+"&Group="+ArrayToCommaSeparatedString(group))
 
     def GetSlaveNamesInPool(self, pool):
         """ Gets the names of all slaves in a specific pool.
             Input:  pool: The name of the pool to search in.( May be a list)
             Returns: a list of all slaves that are in the pool
         """
-        return self.connectionProperties.__get__("/api/pools?Pool="+ArrayToCommaSeperatedString(pool).replace(' ','+'))
+        return self.connectionProperties.__get__("/api/pools?Pool="+ArrayToCommaSeparatedString(pool).replace(' ','+'))
 
     def GetSlaveNamesInGroup(self, group):
         """ Gets the names of all slaves in a specific group.
             Input:  group: The name of the group to search in. ( May be a list )
             Returns: a list of all slaves that are in the groups
         """
-        return self.connectionProperties.__get__("/api/groups?Group="+ArrayToCommaSeperatedString(group).replace(' ','+'))
+        return self.connectionProperties.__get__("/api/groups?Group="+ArrayToCommaSeparatedString(group).replace(' ','+'))
 
     def SetPoolsForSlave(self, slave,pool = []):
         """ Sets all of the pools for one or more slaves overriding their old lists
@@ -196,16 +197,3 @@ class Slaves:
             Returns: all history entries for the slave
         """
         return self.connectionProperties.__get__("/api/slaves?Name="+name.replace(' ','+')+"&Data=history")
-
-#Helper function to seperate arrays into strings
-def ArrayToCommaSeperatedString(array):
-    if isinstance(array, basestring):
-        return array
-    else:
-        i=0
-        script=""
-        for i in range(0,len(array)):
-            if(i!=0):
-                script+=","
-            script += str(array[i]);
-        return script

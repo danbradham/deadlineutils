@@ -1,4 +1,5 @@
 from ConnectionProperty import ConnectionProperty
+from DeadlineUtility import ArrayToCommaSeparatedString
 import json
 
 class Users:
@@ -35,7 +36,7 @@ class Users:
         """
         script = "/api/users"
         if names != None:
-            script =script +"?Name=" + ArrayToCommaSeperatedString(names).replace(' ','+')
+            script =script +"?Name=" + ArrayToCommaSeparatedString(names).replace(' ','+')
             
         return (self.connectionProperties.__get__(script))
 
@@ -56,7 +57,7 @@ class Users:
             Return: Success message
         """
             
-        return self.connectionProperties.__delete__("/api/users?Name=" + ArrayToCommaSeperatedString(name).replace(' ','+'))
+        return self.connectionProperties.__delete__("/api/users?Name=" + ArrayToCommaSeparatedString(name).replace(' ','+'))
         
     def AddUserToUserGroup(self, user,group):
         """ Adds all of the users given to one or more user groups
@@ -134,16 +135,3 @@ class Users:
         result = (self.connectionProperties.__delete__("/api/usergroups?Name="+name.replace(' ','+')))
         
         return result
-
-#Helper function to seperate arrays into strings
-def ArrayToCommaSeperatedString(array):
-    if isinstance(array, basestring):
-        return array
-    else:
-        i=0
-        script = ""
-        for i in range(0,len(array)):
-            if(i!=0):
-                script+=","
-            script += array[i];
-        return script

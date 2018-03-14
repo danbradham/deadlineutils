@@ -1,4 +1,5 @@
 from ConnectionProperty import ConnectionProperty
+from DeadlineUtility import ArrayToCommaSeparatedString
 import json
 
 class Pulse:
@@ -29,7 +30,7 @@ class Pulse:
         """
         script = "/api/pulse?Info=true"
         if names != None:
-            script = script+"&Names="+ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = script+"&Names="+ArrayToCommaSeparatedString(names).replace(' ','+')
         return self.connectionProperties.__get__(script)
 
     def SavePulseInfo(self, info):
@@ -58,7 +59,7 @@ class Pulse:
         """
         script = "/api/pulse?Settings=true"
         if names != None:
-            script = script+"&Names="+ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = script+"&Names="+ArrayToCommaSeparatedString(names).replace(' ','+')
         
         return self.connectionProperties.__get__(script)
 
@@ -88,7 +89,7 @@ class Pulse:
         """
         script = "/api/pulse"
         if names != None:
-            script = script+"?Names="+ArrayToCommaSeperatedString(names).replace(' ','+')
+            script = script+"?Names="+ArrayToCommaSeparatedString(names).replace(' ','+')
         
         return self.connectionProperties.__get__(script) 
         
@@ -98,16 +99,3 @@ class Pulse:
             Returns: Success message
         """
         return self.connectionProperties.__delete__("/api/pulse?Name="+name)
-
-#Helper function to seperate arrays into strings
-def ArrayToCommaSeperatedString(array):
-    if isinstance(array, basestring):
-        return array
-    else:
-        i=0
-        script=""
-        for i in range(0,len(array)):
-            if(i!=0):
-                script+=","
-            script += str(array[i]);
-        return script

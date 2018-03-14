@@ -1,4 +1,5 @@
 from ConnectionProperty import ConnectionProperty
+from DeadlineUtility import ArrayToCommaSeparatedString
 import json
 
 class Pools:
@@ -66,17 +67,5 @@ class Pools:
             Returns: Success message
         """
         
-        return self.connectionProperties.__delete__("/api/pools?Pool="+ArrayToCommaSeperatedString(names).replace(' ','+'))
+        return self.connectionProperties.__delete__("/api/pools?Pool="+ArrayToCommaSeparatedString(names).replace(' ','+'))
         
-#Helper function to seperate arrays into strings
-def ArrayToCommaSeperatedString(array):
-    if isinstance(array, basestring):
-        return array
-    else:
-        i=0
-        script=""
-        for i in range(0,len(array)):
-            if(i!=0):
-                script+=","
-            script += str(array[i]);
-        return script
