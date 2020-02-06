@@ -6,22 +6,21 @@ from DeadlineUtility import ArrayToCommaSeparatedString
 class Jobs:
     """
         Class used by DeadlineCon to send Job requests. 
-        Stores the address of the web service for use in sending requests.
+        Stores the address of the Web Service for use in sending requests.
     """
     def __init__(self, connectionProperties):
         self.connectionProperties = connectionProperties
     
     def GetJobIds(self):
-        """    Gets all the job IDs.
+        """    Gets all the Job IDs.
             Returns: The list of IDs.
         """
-
         return self.connectionProperties.__get__("/api/jobs?IdOnly=true")
 
     def GetJobs(self, ids = None):
-        """    Gets all specified jobs, or all jobs if none specified.
-            Input: List of job Ids
-            Returns: The list of Jobs
+        """    Gets all specified Jobs, or all Jobs if none specified.
+            Input: List of Job Ids.
+            Returns: The list of Jobs.
         """
         script = "/api/jobs"
         if ids != None:
@@ -47,11 +46,10 @@ class Jobs:
         return self.connectionProperties.__get__("/api/jobs?States=" + ",".join(states))
 
     def GetJob(self, id):
-        """Gets a job
-            Input: id: The job id (may be a list)
-            Returns: The job/s (list)
+        """Gets a Job.
+            Input: id: The Job ID (may be a list).
+            Returns: The Job/s (list).
         """
-        
         jobId = ArrayToCommaSeparatedString(id)
         
         result = self.connectionProperties.__get__("/api/jobs?JobID="+jobId)
@@ -62,9 +60,9 @@ class Jobs:
         return result
 
     def SaveJob(self, jobData):
-        """    Updates a job's properties in the database.
-            Input: jobData: The jobs information in json format
-            Returns: Success message
+        """    Updates a Job's properties in the database.
+            Input: jobData: The Jobs information in json format.
+            Returns: Success message.
         """
         jobData = json.dumps(jobData)
         body = '{"Command":"save", "Job":'+jobData+'}'
@@ -73,17 +71,17 @@ class Jobs:
 
     def SuspendJob(self, id):
         """    Suspend a queued, rendering, or pending job.
-            Input: id: The job id
-            Returns: Success message
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"suspend", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
         
     def SuspendJobNonRenderingTasks(self, id):
-        """ Suspends the tasks for a job that are not in the rendering state.
-            Input: id: The job id
-            Returns: Success message
+        """ Suspends the Tasks for a Job that are not in the rendering state.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"suspendnonrendering", "JobID":"'+id+'"}'
         
@@ -91,124 +89,122 @@ class Jobs:
 
     def ResumeJob(self, id):
         """    Resumes a job.
-            Input: id: The job id
-            Returns: Success message
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"resume", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def ResumeFailedJob(self, id):
-        """    Resumes a failed job.
-            Input: id: The job id
-            Returns: Success message
+        """    Resumes a failed Job.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"resumefailed", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def DeleteJob(self, id):
-        """    Deletes a job.
-            Input: id: The job id
-            Returns: Success message
+        """    Deletes a Job.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         return self.connectionProperties.__delete__("/api/jobs?JobID="+id)
 
     def RequeueJob(self, id):
-        """    Requeues a job. All rendering and completed tasks for the job will be requeued.
-            Input: id: The job id
-            Returns: Success message
+        """    Requeues a Job. All rendering and completed Tasks for the Job will be requeued.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"requeue", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def ArchiveJob(self, id):
-        """    Archive a non-queued, non-rendering job.
-            Input: id: The job id
-            Returns: Success message
+        """    Archive a non-queued, non-rendering Job.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"archive", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def ImportJob(self,file):
-        """    Imports an archived job and returns it.
-            Input: file: file location for archived job
-            Returns: Success message
+        """    Imports an archived Job and returns it.
+            Input: file: file location for archived Job.
+            Returns: Success message.
         """
         body = '{"Command":"import", "File":"'+file+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def PendJob(self, id):
-        """    Place a job with dependencies in the pending state.
-            Input: id: The job id
-            Returns: Success message
+        """    Place a Job with dependencies in the pending state.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"pend", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def ReleasePendingJob(self, id):
-        """    Releases a pending job.
-            Input: id: The job id
-            Returns: Success message
+        """    Releases a pending Job.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"releasepending", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def CompleteJob(self, id):
-        """    Completes a job. All incomplete tasks for the job will be marked as complete.
-            Input: id: The job id
-            Returns: Success message
+        """    Completes a Job. All incomplete Tasks for the Job will be marked as complete.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"complete", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def FailJob(self, id):
-        """    Fails a job. All incomplete tasks for the job will be marked as failed.
-            Input: id: The job id
-            Returns: Success message
+        """    Fails a Job. All incomplete Tasks for the Job will be marked as failed.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"fail", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def UpdateJobSubmissionDate(self, id):
-        """    Sets the job's submission date to the current time.
-            Input: id: The jobs ID
-            Returns: Success message
+        """    Sets the Job's submission date to the current time.
+            Input: id: The Jobs ID.
+            Returns: Success message.
         """
         body = '{"Command":"updatesubmissiondate", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def SubmitJobFiles(self, info, plugin, aux = [], idOnly = False):
-        """    Submit a new job using job info file and plugin info file.
-            Input:  info: The location of the Job Info File
-                    plugin: The location of the pluign info file
-                    aux: array of any additional auxiliary submission files, defaults to empty
-                    idOnly: If True, only the job's ID is returned, defaults to False
-            Returns: the new job
+        """    Submit a new Job using Job info file and plugin info file.
+            Input:  info: The location of the Job Info File.
+                    plugin: The location of the Plugin Info File.
+                    aux: Array of any additional auxiliary submission files, defaults to empty.
+                    idOnly: If True, only the Job's ID is returned, defaults to False.
+            Returns: The new Job.
         """
-        
         if not isinstance(aux, list):
             aux = [aux]
         
         return self.connectionProperties.__post__("/api/jobs", buildJobSubmission(info, plugin, aux, idOnly))
         
     def SubmitJob(self, info, plugin, aux = [], idOnly = False):
-        """    Submit a new job.
-            Input:  info: Dictionary of job information.
-                    plugin: Dictionary of plugin information for the job.
-                    aux: array of any additional auxiliary submission files, defaults to empty
-                    idOnly: If True, only the job's ID is returned, defaults to False
-            Returns: the new job
+        """    Submit a new Job.
+            Input:  info: Dictionary of Job information.
+                    plugin: Dictionary of Plugin information for the Job.
+                    aux: Array of any additional auxiliary submission files, defaults to empty.
+                    idOnly: If True, only the Job's ID is returned, defaults to False.
+            Returns: The new Job.
         """
-        
         if not isinstance(aux, list):
             aux = [aux]
         
@@ -218,87 +214,101 @@ class Jobs:
         body += '}'
         return self.connectionProperties.__post__("/api/jobs", body)
 
-#Machine Limits    
+    def SubmitJobs(self, jobs=[], dependent=False):
+        """    Submits multiple Jobs.
+            Input:  jobs: List of Jobs as dictionaries. Job dictionaries should contain the following properties:
+                        JobInfo - Dictionary of Job information. Required property.
+                        PluginInfo - Dictionary of Plugin information for the Job. Required property.
+                        AuxFiles - List of any additional auxiliary submission files (defaults to empty). Required property.
+                        DependsOnPrevious - True to make the Job dependent on the previously submitted Job. Defaults to false.
+                    dependent: True to make each Job submitted dependent on the previous (except for the first one). Defaults to false.
+            Returns: Success message.
+        """
+        if not isinstance(jobs, list):
+            jobs = [jobs]
 
+        body = '{"Jobs":' + json.dumps(jobs) + ',"Dependent":"' + str(dependent).lower() + '"}'
+        return self.connectionProperties.__post__( "/api/jobs", body )
+
+    #Machine Limits
     def SetJobMachineLimit(self, id, limit, slaveList, whiteListFlag):
-        """    Sets a job's machine limit.
-            Input:  id: The job ID.
-                    limit: The maximum number of slaves that can work on this job at any one time
-                    slaveList: A list of slaves whare are either not allowed to work on or are the only allowed slave for a job
-                    whiteListFlag: if true the slaves in the slavelist are the only slaves allowed to work on the job else, the slaves are now allowed to work on the job
-            Returns: Success message
+        """    Sets a Job's machine limit.
+            Input:  id: The Job ID.
+                    limit: The maximum number of Slaves that can work on this Job at any one time.
+                    slaveList: A list of Slaves which are either not allowed to work on or are the only allowed Slave for a Job.
+                    whiteListFlag: If true the Slaves in the slavelist are the only Slaves allowed to work on the Job else, the Slaves are now allowed to work on the Job.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"setjobmachinelimit","JobID":id, "Limit":limit, "SlaveList":slaveList,"WhiteListFlag":whiteListFlag})
     
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def AddSlavesToJobMachineLimitList(self, id, slaveList):
-        """    Add additional slaves to the jobs limit list
-            Input:  id: The job ID.
-                    slaveList: The slaves to be added to the jobs machine limit list
-            Returns: Success message
+        """    Add additional Slaves to the Jobs limit list.
+            Input:  id: The Job ID.
+            slaveList: The Slaves to be added to the Jobs machine limit list.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"addslavestojobmachinelimitlist","JobID":id, "SlaveList":slaveList})
     
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def RemoveSlavesFromJobMachineLimitList(self, id, slaveList):
-        """    Remove chosen slaves from the jobs limit list
-            Input:  id: The job ID.
-                slaveList: The slaves to be removed from the jobs machine limit list
-            Returns: Success message
+        """    Remove chosen Slaves from the Jobs limit list.
+            Input: id: The Job ID.
+            slaveList: The Slaves to be removed from the Jobs machine limit list.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"removeslavesfromjobmachinelimitlist","JobID":id,"SlaveList":slaveList})
     
         return self.connectionProperties.__put__("/api/jobs", body)
         
     def SetJobMachineLimitListedSlaves(self, id, slaveList):
-        """    Sets a job's machine limit slave list.
-            Input:  id: The job ID.
-                    slaveList: A list of slaves whare are either not allowed to work on or are the only allowed slave for a job
-            Returns: Success message
+        """    Sets a Job's machine limit Slave list.
+            Input:  id: The Job ID.
+            slaveList: A list of Slaves which are either not allowed to work on or are the only allowed Slave for a Job.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"setjobmachinelimitlistedslaves","JobID":id, "SlaveList":slaveList})
     
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def SetJobMachineLimitWhiteListFlag(self, id, whiteListFlag):
-        """    Sets a job's machine limit white list flag.
-            Input:  id: The job ID.
-                    whiteListFlag: if true the slaves in the slavelist are the only slaves allowed to work on the job else, the slaves are now allowed to work on the job
-            Returns: Success message
+        """    Sets a Job's machine limit white list flag.
+            Input:  id: The Job ID.
+            whiteListFlag: If true the Slaves in the slavelist are the only Slaves allowed to work on the Job else, the Slaves are now allowed to work on the Job.
+            Returns: Success message.
         """
-        
         body = json.dumps({"Command":"setjobmachinelimitwhitelistflag","JobID":id, "WhiteListFlag":whiteListFlag})
     
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def SetJobMachineLimitMaximum(self, id, limit):
-        """    Sets a job's machine limit maximum number of slaves.
-            Input:  id: The job ID.
-                    limit: The maximum number of slaves that can work on this job at any one time
-            Returns: Success message
+        """    Sets a Job's machine limit maximum number of Slaves.
+            Input:  id: The Job ID.
+            limit: The maximum number of Slaves that can work on this Job at any one time.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"setjobmachinelimitmaximum","JobID":id, "Limit":limit})
     
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def AppendJobFrameRange(self, id, frameList):
-        """    Appends to a job's frame range without affecting the existing tasks. The only exception is if the job's chunk size is greater than one, and the last task is having frames appended to it.
-            Input: id; The Job ID.
-                    frameList: The additional frames to append.
-            Returns: Success message
+        """    Appends to a Job's frame range without affecting the existing Tasks. The only exception is if the Job's chunk size is greater than one, and the last Task is having frames appended to it.
+            Input: id: The Job ID.
+            frameList: The additional frames to append.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"appendjobframerange","JobID":id, "FrameList":frameList})
     
         return self.connectionProperties.__put__("/api/jobs", body)
 
     def SetJobFrameRange(self, id, frameList, chunkSize):
-        """    Modifies a job's frame range. If the job is currently being rendered, any rendering tasks will be requeued to perform this operation.
-            Input: id; The Job ID.
-                    frameList: The frame list.
-                    chunkSize: The chunk size.
-            Returns: Success message
+        """    Modifies a Job's frame range. If the Job is currently being rendered, any rendering Tasks will be requeued to perform this operation.
+            Input: id: The Job ID.
+            frameList: The frame list.
+            chunkSize: The chunk size.
+            Returns: Success message.
         """
         body = json.dumps({"Command":"setjobframerange","JobID":id, "FrameList":frameList, "ChunkSize":chunkSize})
     
@@ -306,11 +316,10 @@ class Jobs:
         
     #Job Details
     def GetJobDetails(self, ids):
-        """ Gets the job details for the provided Job IDs.
-            Input: The Job ids (may be a list)
-            Return: The Job Details for the valid Job IDs provided.
+        """ Gets the Job details for the provided Job IDs.
+            Input: The Job IDs (may be a list).
+            Returns: The Job Details for the valid Job IDs provided.
         """
-        
         script = "/api/jobs"
 
         script = script +"?JobID=" + ArrayToCommaSeparatedString(ids)+"&Details=true"
@@ -318,11 +327,10 @@ class Jobs:
         
     #Undelete/Purge Deleted
     def GetDeletedJobs(self, ids = None):
-        """ Gets the undeleted jobs that correspond to the provided job ids. If no ids are provided, gets all the deleted jobs.
-            Input: The Job ids (optional, may be a list)
-            Return: The job/s (list)
+        """ Gets the undeleted Jobs that correspond to the provided Job IDs. If no IDs are provided, gets all the deleted Jobs.
+            Input: The Job IDs (optional, may be a list).
+            Returns: The Job/s (list).
         """
-        
         script = "/api/jobs?Deleted=true"
         
         if ids != None:
@@ -330,39 +338,37 @@ class Jobs:
         return self.connectionProperties.__get__(script)
             
     def GetDeletedJobIDs(self):
-        """    Gets all the deleted job IDs.
-            Returns: The list of deleted job IDs.
+        """    Gets all the deleted Job IDs.
+            Returns: The list of deleted Job IDs.
         """
-
         return self.connectionProperties.__get__("/api/jobs?IdOnly=true&Deleted=true")
         
     def PurgeDeletedJobs(self, ids):
-        """ Purges the deleted jobs that correspond to the provided ids from the deleted job collection.
-            Input: The Deleted Job ids (may be a list)
-            Return: Success message
+        """ Purges the deleted Jobs that correspond to the provided IDs from the deleted Job collection.
+            Input: The deleted Job IDs (may be a list).
+            Returns: Success message.
         """
-        
         script = "/api/jobs?Purge=true"
         
         script = script +"&JobID=" + ArrayToCommaSeparatedString(ids)
         return self.connectionProperties.__delete__(script)
         
     def UndeleteJob(self, id):
-        """    Undeletes deleted job.
-            Input: id: The job id
-            Returns: Success message
+        """    Undeletes deleted Job.
+            Input: id: The Job ID.
+            Returns: Success message.
         """
         body = '{"Command":"undelete", "JobID":"'+id+'"}'
         
         return self.connectionProperties.__put__("/api/jobs", body)
         
     def UndeleteJobs(self, ids):
-        """    Undeletes deleted jobs.
-            Input: id: The job ids
-            Returns: Success message
+        """    Undeletes deleted Jobs.
+            Input: id: The Job IDs.
+            Returns: Success message.
         """
-        #body = '{"Command":"undelete", "JobIDs":"'+id+'"}'
         body = json.dumps({"Command":"undelete","JobIDs":ids})
+        
         return self.connectionProperties.__put__("/api/jobs", body)
         
 def buildJobSubmission(info, plugins, aux, idOnly):
@@ -398,5 +404,3 @@ def fileRead(filelocation):
     obj = obj + '}'
     
     return obj
-    
-    

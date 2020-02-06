@@ -52,14 +52,7 @@ class Connection(object):
         :param connection: DeadlineConnect.DeadlineCon instance
         '''
 
-        job_ids = []
-
-        slave_infos = self.Slaves.GetSlaveInfos()
-        for info in slave_infos:
-            if info['JobId']:
-                job_ids.append(info['JobId'])
-
-        return job_ids
+        return self.Jobs.GetJobsInStates('Active')
 
     def get_jobs_with_status(self, *statuses):
         '''
@@ -89,8 +82,7 @@ class Connection(object):
 
         used_pools = []
 
-        jobs = self.get_jobs_with_status('queued', 'active')
-        for job in jobs:
+        for job in self.get_active_jobs():
             used_pools.append(job['Props']['Pool'])
 
         return used_pools

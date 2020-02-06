@@ -3,39 +3,36 @@ from ConnectionProperty import ConnectionProperty
 class Repository:
     """
         Class used by DeadlineCon to send Repository requests. 
-        Stores the address of the web service for use in sending requests.
+        Stores the address of the Web Service for use in sending requests.
     """    
     def __init__(self, connectionProperties):
         self.connectionProperties = connectionProperties
         
     def AddJobHistoryEntry(self, jobId, entry):
-        """ Adds the provided entry for the job id provided.
-            Input:  job ID (string)
-                    entry (string)
-            Returns: Success if successful
+        """ Adds the provided entry for the Job ID provided.
+            Input:  Job ID (string).
+                    entry (string).
+            Returns: Success if successful.
         """
-    
         body = '{"Command":"jobhistoryentry","JobID":"'+jobId+'","Entry":"'+entry+'"}'
         
         return self.connectionProperties.__post__('/api/repository', body)
         
     def AddSlaveHistoryEntry(self, slaveName, entry):
-        """ Adds the provided entry for the slave name provided.
-            Input:  slave name (string)
-                    entry (string)
-            Returns: Success if successful
+        """ Adds the provided entry for the Slave name provided.
+            Input:  Slave name (string).
+                    entry (string).
+            Returns: Success if successful.
         """
-    
         body = '{"Command":"slavehistoryentry","SlaveName":"'+slaveName+'","Entry":"'+entry+'"}'
         
         return self.connectionProperties.__post__('/api/repository', body)
         
     def AddRepositoryHistoryEntry(self, entry):
         """ Adds the provided entry to the repository history.
-            Input:  entry (string)
-            Returns: Success if successful
+            Input:  entry (string).
+            Returns: Success if successful.
         """
-    
         body = '{"Command":"repositoryhistoryentry","Entry":"'+entry+'"}'
         
         return self.connectionProperties.__post__('/api/repository', body)
@@ -60,13 +57,13 @@ class Repository:
 
     def GetEventsDirectory(self):
         """ Gets the repository events directory.
-            Returns: The events directory
+            Returns: The events directory.
         """
         return str((self.connectionProperties.__get__("/api/repository?Directory=events")))
 
     def GetCustomEventsDirectory(self):
         """ Gets the repository custom events directory.
-            Returns: The custom events directory
+            Returns: The custom events directory.
         """
         return str((self.connectionProperties.__get__("/api/repository?Directory=customevents")))
 
@@ -95,8 +92,8 @@ class Repository:
         return str((self.connectionProperties.__get__("/api/repository?Directory=customscripts")))
 
     def GetJobAuxiliaryPath(self,id):
-        """ Gets the auxiliary file directory for the given job.
-            Input:    id: The id of the job
+        """ Gets the auxiliary file directory for the given Job.
+            Input:    id: The ID of the Job.
             Returns: The auxiliary directory.
         """
         return str((self.connectionProperties.__get__("/api/repository?AuxiliaryPath=job&JobID="+id)))
@@ -120,7 +117,7 @@ class Repository:
         return str((self.connectionProperties.__get__("/api/repository?AuxiliaryPath=linuxalternate")))
 
     def GetMacAlternateAuxiliaryPath(self):
-        """ Gets the alternate auxiliary file directory for Mac OSX.
+        """ Gets the alternate auxiliary file directory for Mac OS X.
             Returns: The auxiliary directory.
         """
         return str((self.connectionProperties.__get__("/api/repository?AuxiliaryPath=macalternate")))
@@ -134,11 +131,9 @@ class Repository:
     def GetDeadlineVersion(self):
         """ Gets the version of Deadline that the Web Service is running.
         """
-        
         return str( self.connectionProperties.__get__("/api/repository?Version="))
         
     def GetDeadlineMajorVersion(self):
         """ Gets the Deadline major version number that the Web Service is running.
         """
-        
         return str( self.connectionProperties.__get__("/api/repository?MajorVersion="))

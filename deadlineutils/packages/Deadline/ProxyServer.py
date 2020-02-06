@@ -5,7 +5,7 @@ import json
 
 class ProxyServer:
     """ Class used by DeadlineCon to send ProxyServer requests.
-        Stores the address of the web service for use in sending requests.
+        Stores the address of the Web Service for use in sending requests.
     """
     URL = "/api/proxyserver"
     
