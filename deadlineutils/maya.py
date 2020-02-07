@@ -48,7 +48,7 @@ def submit_job(connection, render_path, render_prefix, render_layers,
             print('Success!')
 
 
-def get_job_info(render_path, render_prefix, render_layer, cache=None):
+def get_job_info(render_path, render_prefix, render_layer, cache=None, **kwargs):
     '''
     Get job_info and plugin_info to use with Connection.submit_job
 
@@ -56,6 +56,7 @@ def get_job_info(render_path, render_prefix, render_layer, cache=None):
     :param render_prefix: filename prefix for rendered images
     :param render_layer: Render layer
     :param cache: Job/plugin info defaults
+    :param kwargs: Keyword Arguments for job
     '''
 
     try:
@@ -131,5 +132,7 @@ def get_job_info(render_path, render_prefix, render_layer, cache=None):
         pass
     else:
         plugin_info.update(renderer_info)
+
+    plugin_info.update(**kwargs)
 
     return job_info, plugin_info
