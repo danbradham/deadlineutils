@@ -52,7 +52,7 @@ class Connection(object):
         :param connection: DeadlineConnect.DeadlineCon instance
         '''
 
-        return self.Jobs.GetJobsInStates('Active')
+        return self.Jobs.GetJobsInState('Active')
 
     def get_jobs_with_status(self, *statuses):
         '''

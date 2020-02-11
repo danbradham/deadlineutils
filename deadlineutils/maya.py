@@ -72,7 +72,11 @@ def get_job_info(render_path, render_prefix, render_layer, cache=None, **kwargs)
         if cache is None:
             cache = {}
 
-        scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+        if 'sceneFile' in kwargs:
+            scene_path = kwargs['sceneFile']
+        else:
+            scene_path = os.path.abspath(cmds.file(query=True, sn=True))
+
         scene_name = os.path.basename(scene_path)
         start_frame = int(cmds.getAttr('defaultRenderGlobals.startFrame'))
         end_frame = int(cmds.getAttr('defaultRenderGlobals.endFrame'))
